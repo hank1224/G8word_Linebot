@@ -4,6 +4,9 @@ secret.json
 # MAC_OS
 .DS_Store
 
+#Ngrok
+ngrok.exe
+
 # Django stuff:
 migrations/
 

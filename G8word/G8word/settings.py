@@ -22,6 +22,7 @@ SECRET_KEY = data.get("SECRET_KEY")
 OPENAI_API_TOKEN = data.get("OPENAI_API_TOKEN")
 LINE_CHANNEL_SECRET = data.get("LINE_CHANNEL_SECRET")
 LINE_CHANNEL_ACCESS_TOKEN = data.get("LINE_CHANNEL_ACCESS_TOKEN")
+NGROK_URL = data.get("NGROK_URL")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,7 +38,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# 截掉前八個字 https://
+ALLOWED_HOSTS = [ NGROK_URL[8:] ]
 
 
 # Application definition
