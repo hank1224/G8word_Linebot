@@ -26,25 +26,34 @@ def callback(request):
 
         for event in events:
             if isinstance(event, MessageEvent):
-                if isinstance(event.message, TextMessage):
-                    mtext = event.message.text
 
-                    if mtext == '@資料來源':
-                        Line_bot_api.reply_message(event.reply_token, TextSendMessage(text='中央氣象局提供'))
-                    if mtext == '@網站':
-                        Line_bot_api.reply_message(event.reply_token, TextSendMessage(text='網站'))
-                    if mtext == '@歷年淹水範圍':
-                        Line_bot_api.reply_message(event.reply_token, TextSendMessage(text='淹水'))
+                # 如果為單人聊天室
+                if event.source.type == 'user':
+                    Line_bot_api.reply_message(event.reply_token, TextSendMessage(text="僅支援多人群組，閉嘴"))
 
-                    if mtext == '我的ID':
-                        try:
-                            Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=event.source.user_id))
-                        except:
-                            Line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Get user_id err"))
+                # 如果為群組聊天室
+                if event.source.type == 'group':
+                    if isinstance(event.message, TextMessage):
+                        mtext = event.message.text
 
-                    else:
-                        #Line_bot_api.reply_message(event.reply_token, TextSendMessage(text="all else"))
-                        pass #掛上去就500 "message": "Invalid reply token"
+                        if mtext == '@資料來源':
+                            Line_bot_api.reply_message(event.reply_token, TextSendMessage(text='中央氣象局提供'))
+                        if mtext == '@網站':
+                            Line_bot_api.reply_message(event.reply_token, TextSendMessage(text='網站'))
+                        if mtext == '@歷年淹水範圍':
+                            Line_bot_api.reply_message(event.reply_token, TextSendMessage(text='淹水'))
+
+                        if mtext == '我的ID':
+                            try:
+                                Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=event.source.user_id))
+                            except:
+                                Line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Get user_id err"))
+
+                        else:
+                            #Line_bot_api.reply_message(event.reply_token, TextSendMessage(text="all else"))
+                            pass #掛上去就500 "message": "Invalid reply token"
+                else:
+                    return HttpResponseBadRequest("來源非 單人 或 群組聊天室")
 
         return HttpResponse()
     else:
