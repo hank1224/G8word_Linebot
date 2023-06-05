@@ -19,7 +19,7 @@ with open('secret.json', 'r') as file:
     data = json.load(file)
 
 SECRET_KEY = data.get("SECRET_KEY")
-OPENAI_API_TOKEN = data.get("OPENAI_API_TOKEN")
+OPENAI_API_KEY = data.get("OPENAI_API_KEY")
 LINE_CHANNEL_SECRET = data.get("LINE_CHANNEL_SECRET")
 LINE_CHANNEL_ACCESS_TOKEN = data.get("LINE_CHANNEL_ACCESS_TOKEN")
 NGROK_URL = data.get("NGROK_URL")
@@ -46,6 +46,7 @@ ALLOWED_HOSTS = [ NGROK_URL[8:] ]
 
 INSTALLED_APPS = [
     'linebot_app',
+    'dialogue_process_app',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

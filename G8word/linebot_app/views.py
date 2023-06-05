@@ -6,6 +6,8 @@ from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import MessageEvent, TextSendMessage, TextMessage, QuickReply, QuickReplyButton, MessageAction
 
+from dialogue_process_app.views import chat
+
 Line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
 
@@ -69,8 +71,8 @@ def callback(request):
 
                         # 一般文字訊息
                         else:
-                            # Line_bot_api.reply_message(event.reply_token, TextSendMessage(text="all else"))
-                            pass
+                            reply_text = chat(mtext)
+                            Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
                 else:
                     return HttpResponseBadRequest("來源非 單人 或 群組聊天室")
 
