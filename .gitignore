@@ -6,6 +6,7 @@ secret.json
 
 #Ngrok
 ngrok
+ngrok.exe
 
 # Django stuff:
 migrations/
