@@ -8,9 +8,6 @@ secret.json
 ngrok
 ngrok.exe
 
-# Django stuff:
-migrations/
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
