@@ -1,9 +1,21 @@
 from django.shortcuts import render
 from django.conf import settings
 
+import re
+
 import os   
 import openai
 openai.api_key = settings.OPENAI_API_KEY
+
+def gateway(mtext):
+
+    if str.startswith(mtext, 'http'):
+        return "http!"
+
+    # 去除@符號
+    mtext = re.sub('@', '', mtext)
+    return mtext 
+    
 
 def chat(chat_content):
     completion = openai.ChatCompletion.create(

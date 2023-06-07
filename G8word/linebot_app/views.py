@@ -6,7 +6,7 @@ from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import MessageEvent, TextSendMessage, TextMessage, QuickReply, QuickReplyButton, MessageAction
 
-from dialogue_process_app.views import chat
+from dialogue_process_app.views import gateway
 
 Line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
@@ -26,23 +26,26 @@ def callback(request):
 
         for event in events:
             if isinstance(event, MessageEvent):
+                
+                print(events)
 
                 # 如果為單人聊天室
                 if event.source.type == 'user':
                     if isinstance(event.message, TextMessage):
                         mtext = event.message.text
 
-                        if mtext == '我的ID':
+                        if mtext == '！我的ID':
                             try:
                                 user_id = event.source.user_id
                                 profile = get_user_info(user_id)
                                 reply_text = profile.display_name + ": " + user_id
-                                print(reply_text)
+                                print(str(events))
                                 Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
                             except:
                                 Line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Get user_id err"))
                         else:
-                            Line_bot_api.reply_message(event.reply_token, TextSendMessage(text="僅支援多人群組，閉嘴"))
+                            pass
+                            # Line_bot_api.reply_message(event.reply_token, TextSendMessage(text="僅支援多人群組，閉嘴"))
 
                 # 如果為群組聊天室
                 if event.source.type == 'group':
@@ -50,8 +53,8 @@ def callback(request):
                         mtext = event.message.text
 
                         # 指令訊息
-                        if str.startswith(mtext, '@'):
-                            if mtext == '@我的ID':
+                        if str.startswith(mtext, '！'):
+                            if mtext == '！我的ID':
                                 try:
                                     user_id = event.source.user_id
                                     display_name = get_user_info(user_id).display_name
@@ -60,7 +63,7 @@ def callback(request):
                                 except:
                                     Line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Get user_id error"))
 
-                            if mtext == '@群組ID':
+                            if mtext == '！群組ID':
                                 try:
                                     group_id = event.source.group_id
                                     group_name = get_group_info(group_id).group_name
@@ -71,10 +74,7 @@ def callback(request):
 
                         # 一般文字訊息
                         else:
-                            reply_text = chat(mtext)
-                            Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
-                else:
-                    return HttpResponseBadRequest("來源非 單人 或 群組聊天室")
+                            Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=gateway(mtext)))
 
         return HttpResponse()
     else:

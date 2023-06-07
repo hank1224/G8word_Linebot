@@ -1,0 +1,253 @@
+print(events)
+
+群組正常傳送
+[
+   {
+      "deliveryContext": {
+         "isRedelivery": false
+      },
+      "message": {
+         "id": "458505568400179253",
+         "text": "\u4f60\u597d",
+         "type": "text"
+      },
+      "mode": "active",
+      "replyToken": "880c4e7612ce4b67a9481fd3e58e5fce",
+      "source": {
+         "groupId": "C139e832ed397eb94c8287af6a45294f7",
+         "type": "group",
+         "userId": "Uf496dcee2f5c542148d67e7a2a418a22"
+      },
+      "timestamp": 1686121919412,
+      "type": "message",
+      "webhookEventId": "01H2AB5D06RT35NK4DS0W1KZKG"
+   }
+]
+
+群組傳送 "@段浩恩 妳好"
+[{
+    "deliveryContext": {
+        "isRedelivery": false
+    },
+    "message": {
+        "id": "458499676577727047",
+        "mention": {
+            "mentionees": [{
+                "index": 0,
+                "length": 4,
+                "userId": "U6d9686b59cc14554a63bd554e07aba5d"
+            }]
+        },
+        "text": "@\u6bb5\u6d69\u6069 \u59b3\u597d",
+        "type": "text"
+    },
+    "mode": "active",
+    "replyToken": "0e96ca595d814ae19742c24a0dc6619b",
+    "source": {
+        "groupId": "C139e832ed397eb94c8287af6a45294f7",
+        "type": "group",
+        "userId": "Uf496dcee2f5c542148d67e7a2a418a22"
+    },
+    "timestamp": 1686118407734,
+    "type": "message",
+    "webhookEventId": "01H2A7T7T5C8NC116CM2JJ13KX"
+}]
+
+群組傳送一個表情貼
+[
+    {
+        "deliveryContext": {
+            "isRedelivery": false
+        },
+        "message": {
+            "emojis": [
+                {
+                    "emojiId": "032",
+                    "index": 0,
+                    "length": 2,
+                    "productId": "60b6f1fa38d2b971e09f23ac"
+                }
+            ],
+            "id": "458508320148816679",
+            "text": "()",
+            "type": "text"
+        },
+        "mode": "active",
+        "replyToken": "8cabe0b27f1040b399ed95e4f20cf51b",
+        "source": {
+            "groupId": "C139e832ed397eb94c8287af6a45294f7",
+            "type": "group",
+            "userId": "Uf496dcee2f5c542148d67e7a2a418a22"
+        },
+        "timestamp": 1686123559624,
+        "type": "message",
+        "webhookEventId": "01H2ACQF0RZ5F1A9J0PPTP5JWP"
+    }
+]
+
+群組傳送兩個相同表情貼
+[
+    {
+        "deliveryContext": {
+            "isRedelivery": false
+        },
+        "message": {
+            "emojis": [
+                {
+                    "emojiId": "010",
+                    "index": 0,
+                    "length": 2,
+                    "productId": "5ac223c6040ab15980c9b44a"
+                },
+                {
+                    "emojiId": "010",
+                    "index": 2,
+                    "length": 2,
+                    "productId": "5ac223c6040ab15980c9b44a"
+                }
+            ],
+            "id": "458508606435230001",
+            "text": "()()",
+            "type": "text"
+        },
+        "mode": "active",
+        "replyToken": "20440a2fce92472d8d3efecc52762aba",
+        "source": {
+            "groupId": "C139e832ed397eb94c8287af6a45294f7",
+            "type": "group",
+            "userId": "Uf496dcee2f5c542148d67e7a2a418a22"
+        },
+        "timestamp": 1686123730139,
+        "type": "message",
+        "webhookEventId": "01H2ACWNPKQNGHW3QKBABFRQ3Q"
+    }
+]
+
+群組傳送 表情貼 郭 表情貼
+[  
+   {  
+      "deliveryContext":{  
+         "isRedelivery":false
+      },
+      "message":{  
+         "emojis":[  
+            {  
+               "emojiId":"016",
+               "index":0,
+               "length":10,
+               "productId":"5ac223c6040ab15980c9b44a"
+            },
+            {  
+               "emojiId":"017",
+               "index":11,
+               "length":10,
+               "productId":"5ac223c6040ab15980c9b44a"
+            }
+         ],
+         "id":"458508987446067220",
+         "text":"(0 candle)\u90ed(1 candle)",
+         "type":"text"
+      },
+      "mode":"active",
+      "replyToken":"26fdbdf44eb940f9a72a61ba80a59a48",
+      "source":{  
+         "groupId":"C139e832ed397eb94c8287af6a45294f7",
+         "type":"group",
+         "userId":"Uf496dcee2f5c542148d67e7a2a418a22"
+      },
+      "timestamp":1686123957348,
+      "type":"message",
+      "webhookEventId":"01H2AD3K5F3CS77YFVN11HK9AV"
+   }
+]
+
+群組傳送國棟貼圖
+[
+    {
+        "deliveryContext": {
+            "isRedelivery": false
+        },
+        "message": {
+            "id": "458507022381088773",
+            "keywords": [
+                "Haha",
+                "Laughter",
+                "Hehe",
+                "Stifling laughter"
+            ],
+            "packageId": "28569",
+            "stickerId": "592160051",
+            "stickerResourceType": "ANIMATION_SOUND",
+            "type": "sticker"
+        },
+        "mode": "active",
+        "replyToken": "d1fa3289f627425697501e049a552bcc",
+        "source": {
+            "groupId": "C139e832ed397eb94c8287af6a45294f7",
+            "type": "group",
+            "userId": "U6d9686b59cc14554a63bd554e07aba5d"
+        },
+        "timestamp": 1686122786030,
+        "type": "message",
+        "webhookEventId": "01H2ABZVFWVQBFNGT6VKNSQYK8"
+    }
+]
+
+群組回覆訊息
+回別人訊息：你媽死了
+與正常發送無異
+[
+    {
+    "deliveryContext": {
+        "isRedelivery": false
+    },
+    "message": {
+        "id": "458500419271262465",
+        "text": "\u4f60\u5abd\u6b7b\u4e86",
+        "type": "text"
+    },
+    "mode": "active",
+    "replyToken": "0be28dc936084de28804fc77d364537a",
+    "source": {
+        "groupId": "C139e832ed397eb94c8287af6a45294f7",
+        "type": "group",
+        "userId": "Uf496dcee2f5c542148d67e7a2a418a22"
+    },
+    "timestamp": 1686118850208,
+    "type": "message",
+    "webhookEventId": "01H2A87QQPH6HXCA4XPH2QR94C"
+    }
+]
+
+@別人 運作方式：
+    暱稱不改打字 @段浩恩
+    實際傳送 @段澔恩
+
+    暱稱改段妓女打字 @段妓女
+    實際傳送 @段澔恩
+
+群組傳送圖片
+[
+  {
+    "deliveryContext": {
+      "isRedelivery": false
+    },
+    "message": {
+      "contentProvider": {
+        "type": "line"
+      },
+      "id": "458506616909070369",
+      "type": "image"
+    },
+    "mode": "active",
+    "replyToken": "cc290e8b1ba9497c9c0cbf1032abf53d",
+    "source": {
+      "groupId": "C139e832ed397eb94c8287af6a45294f7",
+      "type": "group",
+      "userId": "Uf496dcee2f5c542148d67e7a2a418a22"
+    },
+    "timestamp": 1686122544739,
+    "type": "message",
+    "webhookEventId": "01H2ABRFT6C0SADP37HN1GWZEX"
+  }
+]
