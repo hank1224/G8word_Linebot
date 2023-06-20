@@ -18,10 +18,19 @@ import json
 with open('secret.json', 'r') as file:
     data = json.load(file)
 
-SECRET_KEY = data.get("SECRET_KEY")
+# Django secret key
+SECRET_KEY = data.get("DJANGO_SECRET_KEY")
+
+# OpenAI公司的
 OPENAI_API_KEY = data.get("OPENAI_API_KEY")
+
+AZURE_OPENAI_KEY = data.get("AZURE_OPENAI_KEY")
+AZURE_OPENAI_ENDPOINT = data.get("AZURE_OPENAI_ENDPOINT")
+AZURE_OPENAI_DEPLOYMENT_NAME = data.get("AZURE_OPENAI_DEPLOYMENT_NAME")
+
 LINE_CHANNEL_SECRET = data.get("LINE_CHANNEL_SECRET")
 LINE_CHANNEL_ACCESS_TOKEN = data.get("LINE_CHANNEL_ACCESS_TOKEN")
+
 NGROK_URL = data.get("NGROK_URL")
 
 
