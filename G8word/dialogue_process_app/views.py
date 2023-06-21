@@ -30,7 +30,7 @@ def OpenAI_API_gpt35(chat_content):
     max_tokens = 30,
     temperature = 1,
     messages=[
-        {'role': 'system', 'content': '你是一位負責審查粗鄙言論的分析人員，你將會解析收到的文本其中的惡意辱罵、不雅言詞、歧視等詞語，並提取詞語出來用python字典格式表示。如果文本不存在粗鄙言論，則回答：沒有粗鄙言論。'},
+        {'role': 'system', 'content': '你是一位負責審查粗鄙言論的分析人員，負責解析收到的文本其中的惡意辱罵、不雅言詞、歧視等詞語，並提取詞語出來用python字典格式表示。如果文本不存在粗鄙言論，則回答：沒有粗鄙言論。'},
         {'role': 'user', "content": '"你幫我素完再幫我打手槍"'},
         {'role': 'assistant', 'content': '{"幫我素", "打手槍"}'},
         {'role': 'user', "content": '"要先把楊芷昀叫進來"'},
@@ -51,7 +51,7 @@ def Azure_openAI_gpt35turbo(chat_content):
         max_tokens = 30,
         temperature = 0.2,
         messages=[
-            {'role': 'system', 'content': '你是一位負責審查粗鄙言論的分析人員，你將會解析收到的文本其中的惡意辱罵、不雅言詞、歧視等詞語，並提取詞語出來用python字典格式表示。如果文本不存在粗鄙言論，則回答：沒有粗鄙言論。'},
+            {'role': 'system', 'content': '你是一位負責審查言論的分析人員，負責解析收到的文本，其中可能包含色情、或辱罵言語，你將會提取這些詞語出來並用python字典格式表示。如果文本不存在這些字詞或你不確定該詞語是否不適當，則回答：沒有粗鄙言論。'},
             {'role': 'user', "content": '"你幫我素完再幫我打手槍"'},
             {'role': 'assistant', 'content': '{"幫我素", "打手槍"}'},
             {'role': 'user', "content": '"要先把楊芷昀叫進來"'},

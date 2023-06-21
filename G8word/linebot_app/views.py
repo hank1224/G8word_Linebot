@@ -27,7 +27,7 @@ def callback(request):
         for event in events:
             if isinstance(event, MessageEvent):
                 
-                print(events)
+                # print(events)
 
                 # 如果為單人聊天室
                 if event.source.type == 'user':
@@ -44,7 +44,7 @@ def callback(request):
                             except:
                                 Line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Get user_id err"))
                         else:
-                            pass
+                            return HttpResponse()
                             # Line_bot_api.reply_message(event.reply_token, TextSendMessage(text="僅支援多人群組，閉嘴"))
 
                 # 如果為群組聊天室
@@ -74,7 +74,10 @@ def callback(request):
 
                         # 一般文字訊息
                         else:
-                            Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=gateway(mtext)))
+                            # return 200 to LINE server
+                            return HttpResponse()
+                            
+                            # Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=gateway(mtext)))
 
         return HttpResponse()
     else:
