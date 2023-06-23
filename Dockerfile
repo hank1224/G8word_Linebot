@@ -2,14 +2,14 @@
 FROM python:3.10
 
 # 設置工作資料夾
-WORKDIR /app
+WORKDIR /app/
 
 # 安裝Django和其他依賴
 COPY requirements.txt /app/
 RUN pip install -r requirements.txt
 
 # 複製Django應用程式到工作資料夾
-COPY ./G8word/ /app/
+COPY . /app/
 
 # 設置環境變數
 ENV DEBUG=True
