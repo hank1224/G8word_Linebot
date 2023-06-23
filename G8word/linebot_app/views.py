@@ -11,6 +11,8 @@ from dialogue_process_app.views import gateway
 Line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
 
+from .tasks import async_func
+
 
 @csrf_exempt
 def callback(request):
@@ -26,8 +28,6 @@ def callback(request):
 
         for event in events:
             if isinstance(event, MessageEvent):
-                
-                # print(events)
 
                 # 如果為單人聊天室
                 if event.source.type == 'user':
@@ -74,11 +74,10 @@ def callback(request):
 
                         # 一般文字訊息
                         else:
-                            # return 200 to LINE server
-                            return HttpResponse()
-                            
-                            # Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=gateway(mtext)))
-
+                            Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=gateway(mtext)))
+                            # async_func.delay()  # 呼叫 async_func
+                            # print("async_func called")
+                            return HttpResponse('OK', status=200)
         return HttpResponse()
     else:
         return HttpResponseBadRequest()

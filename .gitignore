@@ -1,5 +1,6 @@
 # keys & tokens
 secret.json
+.env
 
 # MAC_OS
 .DS_Store

@@ -13,25 +13,25 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 
 # 請在和 manage.py 同級目錄下建立 secret.json 存放密鑰
+import os
 import json
-
 with open('secret.json', 'r') as file:
     data = json.load(file)
 
-# Django secret key
-SECRET_KEY = data.get("DJANGO_SECRET_KEY")
+
+SECRET_KEY = os.getenv("SECRET_KEY") or data.get("DJANGO_SECRET_KEY")
 
 # OpenAI公司的
-OPENAI_API_KEY = data.get("OPENAI_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") or data.get("OPENAI_API_KEY")
 
-AZURE_OPENAI_KEY = data.get("AZURE_OPENAI_KEY")
-AZURE_OPENAI_ENDPOINT = data.get("AZURE_OPENAI_ENDPOINT")
-AZURE_OPENAI_DEPLOYMENT_NAME = data.get("AZURE_OPENAI_DEPLOYMENT_NAME")
+AZURE_OPENAI_KEY = os.getenv("AZURE_OPENAI_KEY") or data.get("AZURE_OPENAI_KEY")
+AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT") or data.get("AZURE_OPENAI_ENDPOINT")
+AZURE_OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME") or data.get("AZURE_OPENAI_DEPLOYMENT_NAME")
 
-LINE_CHANNEL_SECRET = data.get("LINE_CHANNEL_SECRET")
-LINE_CHANNEL_ACCESS_TOKEN = data.get("LINE_CHANNEL_ACCESS_TOKEN")
+LINE_CHANNEL_SECRET = os.getenv("LINE_CHANNEL_SECRET") or data.get("LINE_CHANNEL_SECRET")
+LINE_CHANNEL_ACCESS_TOKEN = os.getenv("LINE_CHANNEL_ACCESS_TOKEN") or data.get("LINE_CHANNEL_ACCESS_TOKEN")
 
-NGROK_URL = data.get("NGROK_URL")
+NGROK_URL = os.getenv("NGROK_URL") or data.get("NGROK_URL")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -146,3 +146,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Celery settings
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
