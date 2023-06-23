@@ -18,4 +18,4 @@ ENV DEBUG=True
 EXPOSE 8000
 
 # 啟動Django應用程式
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "G8word/manage.py", "runserver", "0.0.0.0:8000"]

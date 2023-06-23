@@ -76,7 +76,7 @@ def callback(request):
                         else:
                             Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=gateway(mtext)))
                             # async_func.delay()  # 呼叫 async_func
-                            # print("async_func called")
+                            print("async_func called")
                             return HttpResponse('OK', status=200)
         return HttpResponse()
     else:
