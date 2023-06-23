@@ -18,8 +18,10 @@ import json
 try:
     with open('secret.json', 'r') as file:
         data = json.load(file)
+    # print("Using secret.json")
 except:
-    print("Create secret.json file in the same directory as manage.py if you want to run without setup environment variables.")
+    # print("Using environment variables")
+    pass
 
 SECRET_KEY = os.getenv("SECRET_KEY") or data.get("DJANGO_SECRET_KEY")
 
@@ -35,11 +37,6 @@ LINE_CHANNEL_SECRET = os.getenv("LINE_CHANNEL_SECRET") or data.get("LINE_CHANNEL
 LINE_CHANNEL_ACCESS_TOKEN = os.getenv("LINE_CHANNEL_ACCESS_TOKEN") or data.get("LINE_CHANNEL_ACCESS_TOKEN")
 
 # NGROK_URL = os.getenv("NGROK_URL") or data.get("NGROK_URL")
-
-
-# Celery settings
-CELERY_BROKER_URL = 'redis://redis:6379'
-CELERY_RESULT_BACKEND = 'redis://redis:6379'
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -155,3 +152,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# # Docker Celery settings
+# CELERY_APP="G8word.G8word.celery:app"
+# CELERY_BROKER_URL = 'redis://redis:6379'
+# CELERY_RESULT_BACKEND = 'redis://redis:6379'
+
+# Local Celery settings
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_ACCEPT_CONTENT = ['application/json', ]
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

@@ -9,7 +9,7 @@ COPY requirements.txt /app/
 RUN pip install -r requirements.txt
 
 # 複製Django應用程式到工作資料夾
-COPY . /app/
+COPY ./G8word/ /app/
 
 # 設置環境變數
 ENV DEBUG=True

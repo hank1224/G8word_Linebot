@@ -1,6 +1,6 @@
 version: '3'
 services:
-  main_service:
+  django:
     build: .
     command: python G8word/manage.py runserver 0.0.0.0:8000
     env_file:
@@ -11,8 +11,19 @@ services:
       - "8000:8000"
     depends_on:
       - redis
+      - celery
       
   redis:
     image: redis:latest
     ports:
       - "6379:6379"
+
+  celery:
+    build: .
+    command: python -m celery -A G8word.G8word worker
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
