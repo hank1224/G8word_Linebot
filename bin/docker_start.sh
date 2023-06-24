@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 NAME="G8word" # Name of the application
 DJANGODIR=/code/G8word # Django project directory
 USER=root # the user to run as
@@ -13,7 +14,7 @@ export PYTHONPATH=$DJANGODIR:$PYTHONPATH
 
 # Wait for the database to be ready
 echo "Waiting for database to be ready..."
-until PGPASSWORD=$POSTGRES_PASSWORD psql -h db -U $POSTGRES_USER -d $POSTGRES_DB -c '\q' > /dev/null 2>&1; do
+while ! python manage.py check >/dev/null 2>&1; do
   sleep 1
 done
 echo "Database is ready!"
