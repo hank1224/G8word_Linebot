@@ -11,30 +11,20 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-
-# 請在和 manage.py 同級目錄下建立 secret.json 存放密鑰
 import os
-import json
-try:
-    with open('secret.json', 'r') as file:
-        data = json.load(file)
-    # print("Using secret.json")
-except:
-    # print("Using environment variables")
-    pass
 
-SECRET_KEY = os.getenv("SECRET_KEY") or data.get("DJANGO_SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # OpenAI公司的密鑰
-OPENAI_API_KEY = os.getenv("OPENAI_API_TOKEN") or data.get("OPENAI_API_TOKEN")
+OPENAI_API_KEY = os.getenv("OPENAI_API_TOKEN")
 
 # Azure雲的密鑰
-AZURE_OPENAI_KEY = os.getenv("AZURE_OPENAI_KEY") or data.get("AZURE_OPENAI_KEY")
-AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT") or data.get("AZURE_OPENAI_ENDPOINT")
-AZURE_OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME") or data.get("AZURE_OPENAI_DEPLOYMENT_NAME")
+AZURE_OPENAI_KEY = os.getenv("AZURE_OPENAI_KEY")
+AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
+AZURE_OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
 
-LINE_CHANNEL_SECRET = os.getenv("LINE_CHANNEL_SECRET") or data.get("LINE_CHANNEL_SECRET")
-LINE_CHANNEL_ACCESS_TOKEN = os.getenv("LINE_CHANNEL_ACCESS_TOKEN") or data.get("LINE_CHANNEL_ACCESS_TOKEN")
+LINE_CHANNEL_SECRET = os.getenv("LINE_CHANNEL_SECRET")
+LINE_CHANNEL_ACCESS_TOKEN = os.getenv("LINE_CHANNEL_ACCESS_TOKEN")
 
 # NGROK_URL = os.getenv("NGROK_URL") or data.get("NGROK_URL")
 
@@ -106,8 +96,12 @@ WSGI_APPLICATION = 'G8word.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv("POSTGRES_DB") or 'G8word',
+        'USER': os.getenv("POSTGRES_USER") or 'postgres',
+        'PASSWORD': os.getenv("POSTGRES_PASSWORD") or 'postgres',
+        'HOST': os.getenv("POSTGRES_HOST") or 'db',
+        'PORT': os.getenv("POSTGRES_PORT") or '5432',
     }
 }
 
@@ -136,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Taipei'
 
 USE_I18N = True
 
@@ -153,12 +147,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# # Docker Celery settings
-# CELERY_APP="G8word.G8word.celery:app"
-# CELERY_BROKER_URL = 'redis://redis:6379'
-# CELERY_RESULT_BACKEND = 'redis://redis:6379'
 
-# Local Celery settings
+# Docker Celery settings
 CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 

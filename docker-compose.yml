@@ -2,31 +2,46 @@ version: '3'
 services:
   django:
     build: .
-    working_dir: /app/G8word
-    command: python manage.py runserver 0.0.0.0:8000
+    container_name: django
+    command: python manage.py runserver
     env_file:
       - .env
     volumes:
-      - .:/app
+      - ./logs:/code/G8word/logs
     ports:
       - "8000:8000"
+    links:
+      - db
     depends_on:
       - redis
-      - celery
+      - db
       
   redis:
+    restart: always
     image: redis:latest
+    container_name: redis
     ports:
       - "6379:6379"
 
   celery:
     build: .
-    working_dir: /app/G8word
-    command: python -m celery -A G8word worker -l info
+    container_name: celery
+    command: bash -c "celery -A G8word worker -l info"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+
+  db:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
     env_file:
       - .env
     volumes:
-      - .:/app
-      # - /app/G8word/
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./bin/datas/postgres/:/var/lib/postgresql/
+    ports:
+      - "5432:5432"
     depends_on:
       - redis

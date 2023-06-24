@@ -22,6 +22,10 @@ kombu==5.3.1
 line-bot-sdk==2.4.2
 multidict==6.0.4
 openai==0.27.8
+
+# psycopg2==2.9.6 # 編譯失敗，需要sudo apt-get install libpq-dev
+psycopg2-binary==2.9.6
+
 prompt-toolkit==3.0.38
 python-dateutil==2.8.2
 redis==4.5.5

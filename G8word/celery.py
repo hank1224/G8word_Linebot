@@ -4,7 +4,6 @@ from celery import Celery
 
 import sys
 from pathlib import Path
-print(sys.path)
 
 # BASE_DIR = Path(__file__).resolve().parent
 
