@@ -12,26 +12,29 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
-# 請在和 manage.py 同級目錄下建立 secret.json 存放密鑰
-import json
-
-with open('secret.json', 'r') as file:
-    data = json.load(file)
+import os
+try:
+    # 讀取本地端的環境變數
+    from dotenv import load_dotenv
+    load_dotenv()
+except:
+    pass
 
 # Django secret key
-SECRET_KEY = data.get("DJANGO_SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY")
 
-# OpenAI公司的
-OPENAI_API_KEY = data.get("OPENAI_API_KEY")
+# OpenAI公司的密鑰
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-AZURE_OPENAI_KEY = data.get("AZURE_OPENAI_KEY")
-AZURE_OPENAI_ENDPOINT = data.get("AZURE_OPENAI_ENDPOINT")
-AZURE_OPENAI_DEPLOYMENT_NAME = data.get("AZURE_OPENAI_DEPLOYMENT_NAME")
+# Azure雲的密鑰
+AZURE_OPENAI_KEY = os.getenv("AZURE_OPENAI_KEY")
+AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
+AZURE_OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
 
-LINE_CHANNEL_SECRET = data.get("LINE_CHANNEL_SECRET")
-LINE_CHANNEL_ACCESS_TOKEN = data.get("LINE_CHANNEL_ACCESS_TOKEN")
+LINE_CHANNEL_SECRET = os.getenv("LINE_CHANNEL_SECRET")
+LINE_CHANNEL_ACCESS_TOKEN = os.getenv("LINE_CHANNEL_ACCESS_TOKEN")
 
-NGROK_URL = data.get("NGROK_URL")
+NGROK_URL = os.getenv("NGROK_URL")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -100,8 +103,12 @@ WSGI_APPLICATION = 'G8word.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv("POSTGRES_DB") or 'G8word',
+        'USER': os.getenv("POSTGRES_USER") or 'postgres',
+        'PASSWORD': os.getenv("POSTGRES_PASSWORD") or '0000',
+        'HOST': os.getenv("POSTGRES_HOST") or 'localhost',
+        'PORT': os.getenv("POSTGRES_PORT") or '5432',
     }
 }
 
@@ -130,7 +137,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Taipei'
 
 USE_I18N = True
 
@@ -146,3 +153,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Celery settings
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
+
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_ACCEPT_CONTENT = ['application/json', ]
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

@@ -11,6 +11,8 @@ from dialogue_process_app.views import gateway
 Line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
 
+from .tasks import async_func
+
 
 @csrf_exempt
 def callback(request):
@@ -74,6 +76,8 @@ def callback(request):
 
                         # 一般文字訊息
                         else:
+                            async_func.delay()  # 呼叫 async_func
+                            print("async_func called")
                             # return 200 to LINE server
                             return HttpResponse()
                             
