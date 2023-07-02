@@ -9,6 +9,7 @@ from pathlib import Path
 
 # Set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'G8word.settings')
+os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1') # 為了解決 Windows 環境下的問題
 
 app = Celery('G8word')
 

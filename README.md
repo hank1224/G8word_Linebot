@@ -6,7 +6,7 @@
 ## 本專案尚未完成!!
 收到line訊息後需要在一秒內回覆200，否則line就會關連線造成Broken pipe，message.reply.token時效應該有十分鐘，處理完再慢慢回
 
-目前僅支援在docker環境建置，要改成本地的話要處理環境變數引入(預計最終會讓兩方法通用)
+分支可在docker環境建置，要改成本地的話要處理環境變數引入(預計最終會讓兩方法通用)
 
 使用docker-compose建置，第一次可能celery和django開不起來，手動再按一次即可(判定db初始化完成與否的程式待優化)
 
@@ -15,7 +15,7 @@
 ## 使用技術
 1.  django的celery套件處理任務，需要注意的是他是掛在Django內但是要分兩個終端開
 2.  celery使用radis作為任務儲存資料庫，但redis是用RAM去裝的，並不可靠
-3.  使用postgresal作為Django資料庫，有ORM支援
+3.  使用postgresql作為Django資料庫，有ORM支援
 4.  dockerflie和dockercompose建置，僅有Django可對外網，模式host
 
 ## 本地部署
@@ -37,31 +37,3 @@
 
 ## Docker部署
 你加油
-
-### .env 環境變數
-`docker`和`本地`部署通用，放置在manage.py同層目錄
-```env
-SECRET_KEY=django-insecure-2!2_@8i2#0*y9sr!!)ij(-2$)5f9ovq90hjm(6y+-ua!1k8uzh
-
-OPENAI_API_TOKEN= 官網的
-
-AZURE_OPENAI_KEY=
-AZURE_OPENAI_ENDPOINT=https://****.openai.azure.com/
-AZURE_OPENAI_DEPLOYMENT_NAME=gpt-35-turbo-G8word
-
-LINE_CHANNEL_SECRET=
-LINE_CHANNEL_ACCESS_TOKEN=
-
-NGROK_URL=https://****.ngrok-free.app
-
-POSTGRES_DB=G8word
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=0000
-POSTGRES_HOST=db # docker: db, 本地: localhost
-POSTGRES_PORT=5432
-
-# Docker環境: redis://redis:6379/0
-# 非Docker環境: redis://localhost:6379/0
-CELERY_BROKER_URL=
-CELERY_RESULT_BACKEND=
-```
