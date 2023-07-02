@@ -53,6 +53,38 @@ print(events)
     "webhookEventId": "01H2A7T7T5C8NC116CM2JJ13KX"
 }]
 
+群組@All 你好
+[
+    {
+        "deliveryContext": {
+            "isRedelivery": false
+        },
+        "message": {
+            "id": "462180682979344545",
+            "mention": {
+                "mentionees": [
+                    {
+                        "index": 0,
+                        "length": 4
+                    }
+                ]
+            },
+            "text": "@All 你好",
+            "type": "text"
+        },
+        "mode": "active",
+        "replyToken": "0544d904cde6456eb1b1bfca6e0b9e75",
+        "source": {
+            "groupId": "C139e832ed397eb94c8287af6a45294f7",
+            "type": "group",
+            "userId": "Uf496dcee2f5c542148d67e7a2a418a22"
+        },
+        "timestamp": 1688312458318,
+        "type": "message",
+        "webhookEventId": "01H4BM7BHYH3GDYJ3V18NX434V"
+    }
+]
+
 群組傳送一個表情貼
 [
     {

@@ -79,6 +79,7 @@ def callback(request):
                             async_func.delay()  # 呼叫 async_func
                             print("async_func called")
                             # return 200 to LINE server
+                            print(str(events))
                             return HttpResponse()
                             
                             # Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=gateway(mtext)))
