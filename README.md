@@ -27,6 +27,8 @@
 3. cmd執行 `redis-cli` 然後 `ping` 看有沒有回應 `PONG`
 
 **celery**
+
+_請調配celery.py內的設定，環境支援問題_
 1. 記得先啟動redis
 2. cd manage.py同層目錄
 3. cmd執行 `celery -A G8word worker -l info` 啟動celery
@@ -36,4 +38,4 @@
 1. 注意新建資料庫的密碼要符合.env檔案設定
 
 ## Docker部署
-你加油
+目前僅用Docker桌面板測試實裝
