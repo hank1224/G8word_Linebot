@@ -11,12 +11,13 @@ from dialogue_process_app.views import gateway
 Line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
 
-from .tasks import async_func
+from .tasks import async_func, save_chat_record
 
 
 @csrf_exempt
 def callback(request):
     if request.method == 'POST':
+        print(request)
         signature = request.META['HTTP_X_LINE_SIGNATURE']
         body = request.body.decode('utf-8')
         try:
@@ -28,61 +29,74 @@ def callback(request):
 
         for event in events:
             if isinstance(event, MessageEvent):
-                
-                # print(events)
 
+                # 如果為群組聊天室
+                if event.source.type == 'group':
+                    if isinstance(event.message, TextMessage):
+                        if event.type == 'message':
+                            if event.message.type == 'text':
+
+                                mtext = event.message.text
+
+                                # 指令訊息
+                                if str.startswith(mtext, '！'):
+                                    if mtext == '！我的ID':
+                                        try:
+                                            display_name = get_user_info(event.source.user_id).display_name
+                                            reply_text = display_name + ": " + event.source.user_id
+                                            Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
+                                        except:
+                                            Line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Get user_id error"))
+
+                                    elif mtext == '！群組ID':
+                                        try:
+                                            group_name = get_group_info(event.source.group_id).group_name
+                                            reply_text = group_name + ": " + event.source.group_id
+                                            Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
+                                        except:
+                                            Line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Get group_id error"))
+
+                                # 一般文字訊息
+                                else:
+                                    save_chat_record.delay(event)
+                                    print("async called")
+                                    # Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=gateway(mtext)))
+                                    
+                            elif event.message.type == 'sticker':
+                                print("sticker received from group: " + event.source.group_id)
+                            elif event.message.type == 'image':
+                                print("image received from group: " + event.source.group_id)
+                            elif event.message.type == 'video':
+                                print("video received from group: " + event.source.group_id)
+                            elif event.message.type == 'file':
+                                print("file received from group: " + event.source.group_id)
+                            elif event.message.type == 'audio':
+                                print("audio received from group: " + event.source.group_id)
+                            elif event.message.type == 'location':
+                                print("location received from group: " + event.source.group_id)
+                            else:
+                                print("unknown message type from group: " + event.source.group_id)
+                
                 # 如果為單人聊天室
-                if event.source.type == 'user':
+                elif event.source.type == 'user':
                     if isinstance(event.message, TextMessage):
                         mtext = event.message.text
 
                         if mtext == '！我的ID':
                             try:
-                                user_id = event.source.user_id
-                                profile = get_user_info(user_id)
-                                reply_text = profile.display_name + ": " + user_id
-                                print(str(events))
+                                profile = get_user_info(event.source.user_id)
+                                reply_text = profile.display_name + ": " + event.source.user_id
                                 Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
                             except:
                                 Line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Get user_id err"))
                         else:
-                            return HttpResponse()
-                            # Line_bot_api.reply_message(event.reply_token, TextSendMessage(text="僅支援多人群組，閉嘴"))
-
-                # 如果為群組聊天室
-                if event.source.type == 'group':
-                    if isinstance(event.message, TextMessage):
-                        mtext = event.message.text
-
-                        # 指令訊息
-                        if str.startswith(mtext, '！'):
-                            if mtext == '！我的ID':
-                                try:
-                                    user_id = event.source.user_id
-                                    display_name = get_user_info(user_id).display_name
-                                    reply_text = display_name + ": " + user_id
-                                    Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
-                                except:
-                                    Line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Get user_id error"))
-
-                            if mtext == '！群組ID':
-                                try:
-                                    group_id = event.source.group_id
-                                    group_name = get_group_info(group_id).group_name
-                                    reply_text = group_name + ": " + group_id
-                                    Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
-                                except:
-                                    Line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Get group_id error"))
-
-                        # 一般文字訊息
-                        else:
-                            async_func.delay()  # 呼叫 async_func
-                            print("async_func called")
-                            # return 200 to LINE server
-                            print(str(events))
-                            return HttpResponse()
-                            
-                            # Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=gateway(mtext)))
+                            Line_bot_api.reply_message(event.reply_token, TextSendMessage(text="僅支援多人群組"))
+                
+                else:
+                    if event.source.type == 'room':
+                        print("source type: room received")
+                    else:
+                        print("source type: {} not supported".format(event.source.type))
 
         return HttpResponse()
     else:
