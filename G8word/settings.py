@@ -59,6 +59,7 @@ ALLOWED_HOSTS = [ NGROK_URL[8:] ]
 INSTALLED_APPS = [
     'linebot_app',
     'dialogue_process_app',
+    'liff_app',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

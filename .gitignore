@@ -1,9 +1,6 @@
 # keys & tokens
 secret.json
 
-# MAC_OS
-.DS_Store
-
 #Ngrok
 ngrok
 ngrok.exe
