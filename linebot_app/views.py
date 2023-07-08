@@ -58,10 +58,10 @@ def callback(request):
 
                                 # 一般文字訊息
                                 else:
-                                    save_chat_record.delay(event)
-                                    print("async called")
+                                    save_chat_record.delay(event.as_json_dict())
                                     # Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=gateway(mtext)))
-                                    
+                            
+                            # 未能正確判斷，沒有印出來
                             elif event.message.type == 'sticker':
                                 print("sticker received from group: " + event.source.group_id)
                             elif event.message.type == 'image':

@@ -283,3 +283,71 @@ print(events)
     "webhookEventId": "01H2ABRFT6C0SADP37HN1GWZEX"
   }
 ]
+
+多人@
+
+{
+  "type": "message",
+  "mode": "active",
+  "timestamp": 1688723219422,
+  "source": {
+    "type": "group",
+    "groupId": "Cfc84870d0b906699d5e6455c4bd037c2",
+    "userId": "Uf496dcee2f5c542148d67e7a2a418a22"
+  },
+  "webhookEventId": "01H4QVYSENX20XXEY41DDCPA7F",
+  "deliveryContext": {
+    "isRedelivery": false
+  },
+  "replyToken": "a355e0c2738f41d1b77ef6a3ec543944",
+  "message": {
+    "type": "text",
+    "id": "462869825547665892",
+    "text": "@All 88",
+    "mention": {
+      "mentionees": [
+        {
+          "index": 0,
+          "length": 4
+        }
+      ]
+    }
+  }
+}
+
+{
+  "type": "message",
+  "mode": "active",
+  "timestamp": 1688723207839,
+  "source": {
+    "type": "group",
+    "groupId": "Cfc84870d0b906699d5e6455c4bd037c2",
+    "userId": "Uf496dcee2f5c542148d67e7a2a418a22"
+  },
+  "webhookEventId": "01H4QVYE4NJS4K40PQ9JYGJN48",
+  "deliveryContext": {
+    "isRedelivery": false
+  },
+  "replyToken": "66af04dd9477475abdb87d5f1ec99150",
+  "message": {
+    "type": "text",
+    "id": "462869806203535747",
+    "text": "@段浩恩 @李啟源 妳好",
+    "mention": {
+      "mentionees": [
+        {
+          "index": 0,
+          "length": 4,
+          "userId": "U6d9686b59cc14554a63bd554e07aba5d"
+        },
+        {
+          "index": 5,
+          "length": 4,
+          "userId": "Ud6b5a6ba645893076a52d1ef73c882b0"
+        }
+      ]
+    }
+  }
+}
+mentionees中的第一個元素的 "index": 0, "length": 4表示被提及的第一個用戶名 "@段浩恩" 在message中的起始位置是從第0個字元開始，長度為4個字元。
+而mentionees中的第二個元素的 "index": 5, "length": 4表示被提及的第二個用戶名 "@李啟源" 在message中的起始位置是從第5個字元開始，長度為4個字元。

@@ -51,7 +51,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = True
 
 # 截掉前八個字 https://
-ALLOWED_HOSTS = [ NGROK_URL[8:] ]
+ALLOWED_HOSTS = [ NGROK_URL[8:], '127.0.0.1' ]
 
 
 # Application definition
