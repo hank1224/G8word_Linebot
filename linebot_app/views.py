@@ -1,10 +1,10 @@
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseServerError
 from django.views.decorators.csrf import csrf_exempt
 
 from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
-from linebot.models import MessageEvent, TextSendMessage, TextMessage, QuickReply, QuickReplyButton, MessageAction
+from linebot.models import MessageEvent, TextSendMessage, TextMessage, QuickReply, QuickReplyButton, MessageAction, StickerMessage
 
 from dialogue_process_app.views import gateway
 
@@ -32,10 +32,9 @@ def callback(request):
 
                 # 如果為群組聊天室
                 if event.source.type == 'group':
-                    if isinstance(event.message, TextMessage):
-                        if event.type == 'message':
-                            if event.message.type == 'text':
-
+                    if event.type == 'message':
+                        if event.message.type == 'text':
+                            if isinstance(event.message, TextMessage):
                                 mtext = event.message.text
 
                                 # 指令訊息
@@ -60,23 +59,28 @@ def callback(request):
                                 else:
                                     save_chat_record.delay(event.as_json_dict())
                                     # Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=gateway(mtext)))
+
+                            else: # 收到的資料格式有誤
+                                return HttpResponseServerError()
                             
-                            # 未能正確判斷，沒有印出來
-                            elif event.message.type == 'sticker':
+                        elif event.message.type == 'sticker':
+                            if isinstance(event.message, StickerMessage):
                                 print("sticker received from group: " + event.source.group_id)
-                            elif event.message.type == 'image':
-                                print("image received from group: " + event.source.group_id)
-                            elif event.message.type == 'video':
-                                print("video received from group: " + event.source.group_id)
-                            elif event.message.type == 'file':
-                                print("file received from group: " + event.source.group_id)
-                            elif event.message.type == 'audio':
-                                print("audio received from group: " + event.source.group_id)
-                            elif event.message.type == 'location':
-                                print("location received from group: " + event.source.group_id)
-                            else:
-                                print("unknown message type from group: " + event.source.group_id)
-                
+                            else: # 收到的資料格式有誤
+                                return HttpResponseServerError()
+                        elif event.message.type == 'image':
+                            print("image received from group: " + event.source.group_id)
+                        elif event.message.type == 'video':
+                            print("video received from group: " + event.source.group_id)
+                        elif event.message.type == 'file':
+                            print("file received from group: " + event.source.group_id)
+                        elif event.message.type == 'audio':
+                            print("audio received from group: " + event.source.group_id)
+                        elif event.message.type == 'location':
+                            print("location received from group: " + event.source.group_id)
+                        else:
+                            print("收到未知種類的訊息!!: " + event.source.group_id)
+                    
                 # 如果為單人聊天室
                 elif event.source.type == 'user':
                     if isinstance(event.message, TextMessage):
