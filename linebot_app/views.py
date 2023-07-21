@@ -6,12 +6,10 @@ from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import MessageEvent, TextSendMessage, TextMessage, QuickReply, QuickReplyButton, MessageAction, StickerMessage
 
-from dialogue_process_app.views import gateway
-
 Line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
 
-from .tasks import async_func, save_chat_record
+from .tasks import save_chat_record, OpenAI_API_text_embedding, Azure_openAI_gpt35turbo
 
 
 @csrf_exempt
@@ -58,7 +56,8 @@ def callback(request):
                                 # 一般文字訊息
                                 else:
                                     save_chat_record.delay(event.as_json_dict())
-                                    # Line_bot_api.reply_message(event.reply_token, TextSendMessage(text=gateway(mtext)))
+                                    # OpenAI_API_text_embedding.delay(event.as_json_dict())
+                                    Azure_openAI_gpt35turbo.delay(event.as_json_dict())
 
                             else: # 收到的資料格式有誤
                                 return HttpResponseServerError()

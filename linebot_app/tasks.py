@@ -1,11 +1,32 @@
 from celery import shared_task
 
 from django.utils import timezone
+from django.conf import settings
 
 from .models import chat_record, chat_record_mention
 
 import time, datetime
 import re
+
+from linebot import LineBotApi
+from linebot.models import MessageEvent, TextSendMessage, TextMessage
+from linebot.exceptions import LineBotApiError
+Line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
+
+# 放在全域變數，會出大事，openai和azure的api有重複的參數名稱，待處理
+# 在其他檔案全域宣告version會被讀到，openai版不支援此參數
+import openai
+
+# OpenAI API
+# openai.api_type = 'open_ai'
+# openai.api_key = settings.OPENAI_OPENAI_API_KEY
+
+# Azure OpenAI API
+# openai.api_type = 'azure'
+# openai.api_key = settings.AZURE_OPENAI_API_KEY
+# openai.api_base = settings.AZURE_OPENAI_ENDPOINT
+# openai.api_version = '2023-05-15' # this may change in the future
+# AZURE_OPENAI_DEPLOYMENT_NAME = settings.AZURE_OPENAI_DEPLOYMENT_NAME
 
 @shared_task
 def async_func():
@@ -71,5 +92,51 @@ def save_chat_record(event_dict):
                 chat_record=created_chat_record,
                 mentioned_userId=event_mention.get('userId', None)
             )
-    return True
+    return "存入資料庫"
 
+@shared_task
+def OpenAI_API_text_embedding(event_dict, model="text-embedding-ada-002"):
+
+    openai.api_type = 'open_ai'
+    openai.api_base = 'https://api.openai.com/v1'
+    openai.api_key = settings.OPENAI_OPENAI_API_KEY
+    print(openai.api_base)
+
+    response = openai.Embedding.create(
+        model=model,   
+        input=event_dict['message']['text'],
+    )
+    Line_bot_api.reply_message(event_dict['replyToken'], TextSendMessage(text= response['model'] + "，總token: " + str(response['usage']['total_tokens'])))
+    return "消耗token: " + str(response['usage']['total_tokens'])
+
+@shared_task
+def Azure_openAI_gpt35turbo(event_dict):
+
+    openai.api_type = 'azure'
+    openai.api_key = settings.AZURE_OPENAI_API_KEY
+    openai.api_base = settings.AZURE_OPENAI_ENDPOINT
+    openai.api_version = '2023-05-15' # this may change in the future
+    response = openai.ChatCompletion.create(
+        engine= settings.AZURE_OPENAI_DEPLOYMENT_NAME, # deployment_name
+        max_tokens = 30,
+        temperature = 0.2,
+        messages=[
+            {'role': 'system', 'content': '你是一位負責審查言論的分析人員，負責解析收到的文本，其中可能包含色情、或辱罵言語，你將會提取這些詞語出來並用python字典格式表示。如果文本不存在這些字詞或你不確定該詞語是否不適當，則回答：沒有粗鄙言論。'},
+            {'role': 'user', "content": '"你幫我素完再幫我打手槍"'},
+            {'role': 'assistant', 'content': '{"幫我素", "打手槍"}'},
+            {'role': 'user', "content": '"要先把楊芷昀叫進來"'},
+            {'role': 'assistant', 'content': '沒有粗鄙言論。'},
+            {'role': 'user', "content": '"他媽的祖墳燒起來了"'},
+            {'role': 'assistant', 'content': '{"他媽的", "祖墳"}'},
+            {'role': 'user', "content": '"你直播吃ㄐㄐ比較快"'},
+            {'role': 'assistant', 'content': '{"ㄐㄐ"}'},
+            {'role': 'user', 'content': '"' + event_dict['message']['text'] + '"'}
+        ]
+    )
+
+    if response.choices[0].finish_reason != 'stop':
+        Line_bot_api.reply_message(event_dict['replyToken'], TextSendMessage(text="Azure OpenAI API失敗，原因: " + response.choices[0].finish_reason))
+        return response.choices[0].finish_reason
+
+    Line_bot_api.reply_message(event_dict['replyToken'], TextSendMessage(text= "原文: " + event_dict['message']['text'] + "，識別: "+ response.choices[0].message.content))
+    return "消耗token: " + str(response['usage']['total_tokens'])
